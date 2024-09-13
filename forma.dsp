@@ -25,4 +25,25 @@ xr(n) = px(n) * cos(thetarot) - py(n) * sin(thetarot); // Calcolo della nuova co
 yr(n) = px(n) * sin(thetarot) + py(n) * cos(thetarot); // Calcolo della nuova coordinata y'
 pr(n) = xr(n), yr(n);
 //process = pr(4);
-process = par(i,14,pr(i+1));
+//process = par(i,14,pr(i+1));
+
+ //--- CARTESIAN TO AED ---
+xy2aed(x,y) = a(x,y),d(x,y)
+with{
+  a(x,y)   = atan2(y,x);
+  d(x,y) = sqrt(x^2+y^2);
+};
+
+//process =  par(i,14,pr(i+1) : xy2aed);
+
+a0 = 1; // 1/sqrt(2);
+a1(a,e) = sin(a)*cos(e);
+a2(e) = sin(e);
+a3(a,e) = cos(a)*cos(e);
+
+mto1od(a,e,d) = _ <: (_*a0 : @(pm.l2s(d))),
+                     (_*a1(a,e) : @(pm.l2s(d))),
+                     (_*a2(e) : @(pm.l2s(d))),
+                     (_*a3(a,e) : @(pm.l2s(d)));
+
+process = mto1od(0,0,7);
